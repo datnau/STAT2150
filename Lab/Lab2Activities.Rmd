@@ -1,0 +1,154 @@
+---
+title: 'Lab #2 Activities'
+author: Thanh Dat Nguyen - THAND2301
+output: pdf_document
+---
+
+Instructions:
+
+- Fill in your name in line 3.
+- Knit to pdf to read the questions in a more readable format.
+- Fill in the code chunks below and answer the questions with text responses. It is recommended that you knit to pdf after you fill in each code chunk. Be sure when adding in text responses to never copy-paste symbols from outside of the document.
+- Your responses must use code that was covered in class; other methods to solve the problems will not be accepted.
+- Submit your knit pdf file to Crowdmark.
+
+A reminder that the R code we have covered in class is available on our STAT 2150 A01 UM Learn page, under Content > Course Material.
+
+Your knit pdf file should show the result answering each question. To do this, after creating an R object, you should also print it in a new line within the code chunk.
+
+**Introduction to Questions 1 and 2:**
+
+We have seen the `which()` function used to find a subset of a vector that satisfies some criteria. In the same way, `which()` can be used to find a subset of a data frame that satisfies some criteria. Consider, for example, the data frame `df` created below
+
+```{r}
+students = 1:6
+grades = rep(c("A","B","C"),2)
+df = data.frame(students,grades)
+df
+```
+
+We can use the `which()` function to extract rows from `df` that satisfy some criteria -- for example, all the students with a grade of B. The output will be a new data frame with only the desired rows. In order to do this, we access the `grades` column, find *which* indices of this column (that is, which rows) have a B grade, and then we go back to the whole data frame, keep the identified rows, and store the smaller data frame in a new object:
+
+```{r}
+Bstudents = df[which(df$grades == "B"),] # nothing after comma, which means keep all columns
+Bstudents
+```
+
+**Question 1:**
+
+There is a built-in dataset in R called `airquality`. You can see the documentation on the dataset by typing `?airquality` at the Console. The dataset contains daily readings of air quality values in New York over a 5-month span in 1973.
+
+Create a new data frame with all of the variables of the original dataset, but only for days when the ozone reading was greater than 120. Print the new data frame.
+
+```{r}
+# Question 1
+# Create a new data frame with ozone readings greater than 120
+?airquality
+high_ozone_df <- airquality[which(airquality$Ozone > 120) ,]
+high_ozone_df
+
+```
+
+The high ozone readings above 120 occurred in which months?
+
+*The high ozone readings above 120 occurred in July and August*
+
+Create and print a new data frame that sorts the original data frame with the lowest ozone readings at the top and the highest ozone readings at the bottom.
+
+```{r}
+# Create and print a new data frame that sorts the original data frame with the lowest ozone readings at the top
+# and the highest ozone readings at the bottom
+sorted_df <- airquality[order(airquality$Ozone), ]
+print(sorted_df)
+
+```
+
+Look at the bottom of the ozone column of the sorted data frame. The "NAs" indicate that ozone readings were not collected on some days. We can create a new data frame where missing values of any variable are removed:
+
+```{r}
+newdf = na.omit(airquality) 
+```
+
+Write the R code that determines the number of rows remaining in the `newdf` data frame.
+
+```{r}
+nrow(newdf)
+```
+
+**Question 2:**
+
+There are five months of data in the `airquality` dataset, for May, June, July, August, and September (coded as 5, 6, 7, 8, and 9). Create five new data frames with all of the data for each of these five months. (Refer to the example in the introduction to this lab.) However, do not split up the full `airquality` dataset. Instead, split up the `newdf` dataset created above which removes missing values. After creating your five data frames, do **not** print them.
+
+```{r}
+# Question 2
+# Create five new data frames with all of the data for each of the five months
+may_df <- newdf[which(newdf$Month == 5), ]
+june_df <- newdf[which(newdf$Month == 6), ]
+july_df <- newdf[which(newdf$Month == 7), ]
+august_df <- newdf[which(newdf$Month == 8), ]
+september_df <- newdf[which(newdf$Month == 9), ]
+```
+
+Access each of the five data frames you have created, and calculate the mean solar radiation for each of the five months.
+
+```{r}
+# Access each of the five data frames you have created, and calculate the mean solar radiation for each of the five months
+mean_solar_radiation <- c(mean(may_df$Solar), mean(june_df$Solar), mean(july_df$Solar), mean(august_df$Solar), mean(september_df$Solar))
+mean_solar_radiation
+```
+
+Which month has the lowest average solar radiation?
+
+*September is the lowest average solar radiation*
+
+**Question 3:**
+
+(a) Generate a vector of 1000 random numbers from a normal distribution with mean 6 and standard deviation 2. Store that vector as `x`. (Note that you cannot use commas in R to represent 1,000; instead, simply write 1000.)
+
+```{r}
+# Question 3
+# Generate a vector of 1000 random numbers from a normal distribution with mean 6 and standard deviation 2
+x <- rnorm(1000, mean = 6, sd = 2)
+
+```
+
+(b) Calculate the proportion of numbers in `x` that are greater than 9. (Each time you knit, you will get a different answer because a new set of 1000 values will be generated.)
+
+```{r}
+prop_greater_than_9 <- length(x[x > 9]) / length(x)
+prop_greater_than_9
+
+```
+
+**Question 4:**
+
+If a student is familiar with rules of logarithms and exponents, they will see that this expression:
+
+$$
+\ln \left(e^3 \cdot \sqrt{e^5}\right)
+$$
+can be simplified to simply 5.5, because:
+\begin{align*}
+\ln \left(e^3 \cdot \sqrt{e^5}\right) &= \ln \left(e^3 \cdot (e^5)^{(0.5)} \right) \\
+&\text{since } \sqrt{x} = x^{0.5} \\
+&= \ln (e^3 \cdot e^{2.5}) \\
+&\text{since } (e^a)^b = e^{a\cdot b} \\
+&= \ln (e^{5.5}) \\
+&\text{since } e^a \cdot e^b = e^{a+b} \\
+&= 5.5 \cdot \ln (e) \\
+&\text{since } \ln(e^x) = x \cdot \ln(e) \\
+&= 5.5 \\
+&\text{since } \ln(e) = 1
+\end{align*}
+
+Suppose you do not remember all of those logarithm and exponent properties and your professor asks you to simplify the given expression. Write the R code that will code the expression, so that when you knit to pdf, you will see the simplified answer of 5.5.
+
+```{r}
+# Question 4
+# Simplify the given expression using R
+simplified_expression <- log(exp(3) * sqrt(exp(5)))
+simplified_expression
+
+```
+
+You will be expected to remember these logarithm and exponent properties when we get to Unit 4 of this course!

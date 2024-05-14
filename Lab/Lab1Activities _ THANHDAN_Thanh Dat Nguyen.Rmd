@@ -1,0 +1,130 @@
+---
+title: 'Lab #1 Activities'
+author: Thanh Dat Nguyen
+output: pdf_document
+---
+
+Instructions: Fill in your name in line 3. Fill in the code chunks below and answer the questions with text responses. Be sure when adding in text responses to never copy-paste symbols from outside of the document. Your responses must use code that was covered in class; other methods to solve the problems will not be accepted. Submit your knit pdf file to Crowdmark.
+
+A reminder that the R code we have covered in class is available on our STAT 2150 A01 UM Learn page, under Content > Course Material. It is recommended that you knit to pdf after you fill in each code chunk.
+
+Your knit pdf file should show the result answering each question. To do this, after creating an R object, you should also print it in a new line within the code chunk.
+
+**Question 1:**
+
+Create a vector (call it **x**) of the five values 6,4,5,7 and 2. Find the mean of these five values. (We say we are *passing in* the **x** vector to the **mean()** function.)
+
+```{r}
+x = c(6,4,5,7,2)
+mean(x)
+```
+
+**Question 2:**
+
+There are two datasets built-in to R named **state.area** and **state.name** referring to the 50 U.S. states. We can see what they contain by typing their names (see the knit PDF file):
+
+
+```{r}
+state.area
+state.name
+```
+
+The datasets are linked, so, for example, the first element of **state.area** gives you the area in square miles of the first state in **state.name**. Write the R code that extracts (accesses) the appropriate element from the **state.area** dataset which gives Idaho's area.
+
+```{r}
+area <- c(state.area)
+name <- c(state.name)
+
+name[12]
+area[12]
+
+```
+
+The three smallest states in the U.S. are Rhode Island, Delaware, and Connecticut. We would like to find the average area of these three states. Extract these three areas from **state.area** and then pass them into the **mean()** function. (You should not type the actual areas, but write the R code that extracts those areas.)
+
+```{r}
+mean(area[39],area[8],area[7])
+```
+
+**Question 3:**
+
+The FIFA World Cup takes place every four years. After Argentina won in 2022, the next World Cup will take place in 2026 in Canada, the U.S., and Mexico. Create a vector called **years** showing the years that all World Cups from 2026 to 2100 are scheduled to take place. Do not manually type all of the years.
+
+```{r}
+years <- seq(2026,2100, by = 4)
+years
+```
+
+Extract a year from the **years** vector showing when the seventh World Cup from now will take place.
+
+```{r}
+years[7]
+```
+
+**Question 4:**
+
+Write the R code that creates the following matrix (call it **mymat**), in a way that does not require manually typing each and every value.
+
+\[
+\begin{bmatrix}
+5 & 10 & 15 & 20 \\
+25 & 30 & 35 & 40 \\
+45 & 50 & 55 & 60 \\
+65 & 70 & 75 & 80 \\
+85 & 90 & 95 & 100 \\
+105 & 110 & 115 & 120
+\end{bmatrix}
+\]
+
+```{r}
+mymat <- matrix(seq(5,120,by = 5),nrow = 6, byrow = T)
+mymat
+
+```
+
+Write the R code that extracts the third column of **mymat**.
+
+```{r}
+for(i in 1:6){
+  print(mymat[i,3])
+}
+
+```
+
+Write the R code that creates the same output as the last code chunk, but uses the **seq()** function rather than accessing the **mymat** matrix.
+
+```{r}
+mymat <- matrix(seq(5,120,by = 5),nrow = 6, byrow = T)
+mymat
+
+```
+
+Write the R code that extracts the second column of **mymat**, stores it in an R object named **column2**, and then print the contents of **column2**. Also write the code that extracts the second row of **mymat**, stores it in an R object named **row2**, and then prints the contents of **row2**.
+
+```{r}
+column2 <- mymat[,2]
+print(column2)
+row2 <- mymat[2,]
+print(row2)
+
+```
+
+We can calculate the standard deviation of a vector of data values with the **sd()** function. For example:
+
+```{r}
+data = c(1,3,6)
+sd(data)
+```
+
+Calculate the standard deviation of the **column2** and **row2** objects.
+
+```{r}
+sdCol2 = sd(column2)
+sdRow2 = sd(row2)
+sdCol2
+sdRow2
+```
+
+Looking at the values in the **column2** and **row2** objects, explain why it makes sense that the standard deviation of the **row2** object is much smaller.
+
+*the standard deviation of row 2 is smaller because its value is from the same row, likely closer together, while the values in column2 are from different rows, likely more varied, resulting in a larger standard deviation*
