@@ -135,7 +135,7 @@ myvec = seq(from=1,to=5,by=2)
 myvec
 myvec = rep(4,6)
 myvec
-
+?rep
 # Instead of 1:5, we can use other vectors created
 # on-the-fly:
 data = numeric(5)
@@ -187,6 +187,7 @@ ncol(mydf)
 # output of which() is the indices of the input that are
 # true
 which(c(TRUE,FALSE,TRUE))
+?which
 
 x = rnorm(100,0,1)
 x
@@ -213,6 +214,14 @@ which(myvec%%2 == 1) # returns c(1,3,5,7,9)
 # Obtain the elements of myvec that are odd:
 myvec[which(myvec%%2 == 1)]
 
+which(LETTERS == "R")
+which(ll <- c(TRUE, FALSE, TRUE, NA, FALSE, FALSE, TRUE)) #> 1 3 7
+names(ll) <- letters[seq(ll)]
+which(ll)
+which((1:12)%%2 == 0) # which are even?
+which(1:10 > 3, arr.ind = TRUE)
+
+
 mymat = matrix(1:6,nrow=2)
 mymat
 t(mymat)
@@ -234,7 +243,8 @@ abs(-3.4)
 # as a new column
 # rbind() binds the vectors as one vector then the next one
 # as a new row
-
+?cbind
+?rbind
 a = c(1,2)
 b = c(3,4)
 mymat = cbind(a,b)
@@ -245,6 +255,7 @@ mymat2
 mymat2[2,2] # this is showing a named vector as the ouput
 # or:
 mymat2["b",2]
+
 
 mymat = matrix(1:12,nrow=3)
 mymat
@@ -259,6 +270,7 @@ sqrt(9)
 
 ?log
 log(10) # not equal to 1 since this is actually natural log
+
 
 # log (a^b) = b* log(a)
 # ln (e^x) = x*ln(e) = x
@@ -319,11 +331,13 @@ round(3.77,digits=1)
 
 x = 4:6
 counts = table(x) # output is a NAMED vector
+?table
 pie(counts)
 counts/sum(counts) # gives proportions
 ?pie
 
 expression = paste(names(counts),"\n",counts/sum(counts)*100,"%")
+?paste
 pie(counts,labels=expression)
 
 expression = paste(names(counts),"\n",round(counts/sum(counts)*100,2),"%")
@@ -679,6 +693,7 @@ y
 # 3rd method:
 y = sapply(x,sqrt)
 y
+?sapply
 # sapply() syntax: sapply(object,func); the object is typically a vector
 # or we can use a list, the output is a vector
 
