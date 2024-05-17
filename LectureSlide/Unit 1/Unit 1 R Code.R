@@ -413,7 +413,7 @@ my.mean = function(x){
   ans
 }
 my.mean(1:3)
-# Troubleshooting
+    # Troubleshooting
 x = 1:3
 # copy the lines of code from inside the function and check what's
 # happening
@@ -495,10 +495,10 @@ mysum(6) #uses 6 for a, no default value for b, so error
 # Alternative way of doing slide 33
 # instead of a vector with two components, 
 # let's use two arguments
-diffs = function(x=1,y=2){
+diffs = function(x,y){
   return(y-x)
 }
-new.fun = function(x=1,y=2){
+new.fun = function(x,y){
   temp = diffs(x,y)
   return(exp(temp))
 }
@@ -653,7 +653,7 @@ for(i in 1:10){
 }
 A
 
-# Example using for() with if() statements:
+              # Example using for() with if() statements:
 x = c(-1,2,-4)
 # Take the square root of nonnegative values of x. If a component of x
 # is negative, then keep it unchanged. Store the results in y.
@@ -715,7 +715,7 @@ myfunc = function(x){
 }
 z = sapply(y,myfunc)
 z
-
+?sapply
 mylist = list()
 mylist[[1]] = 1:10
 mylist[[2]] = 11:20
@@ -750,7 +750,7 @@ x = 1
 i = 2
 while(x[length(x)] < 200){
   x = append(x,i^2)
-  i = i + 1
+  i  = i + 1
 }
 x
 
@@ -796,6 +796,59 @@ mtcars[1:4,] # Rows 1-4 of mtcars
 head(mtcars) # First 6 rows
 data = mtcars
 
-
 # Google search: how to make a table in r markdown site:stackexchange.com
 # Google search: how to make a table in r markdown site:stackoverflow.com
+vec = c()
+vec[1] = 1
+i= 1
+while(vec[i] <= 100){
+ vec = append(vec,vec[i]*3)
+  i = i + 1
+}
+vec
+  #while(vec[length(vec)] < 100){
+#  vec[i+1] = 3*vec[i]
+#  i=i+1
+#}
+#vec
+x = rnorm(100,100,10)
+y = double(100)
+
+for(i in 1:100){
+  if(x[i] < 100){
+    y[i] = x[i]
+  }else{
+    y[i] = 0
+  }
+}
+y
+
+x.old = 0
+x= 0
+while(x.old < 10){
+  x.new = 2*x.old + 1
+  x = c(x,x.new)
+  x.old = x.new
+}
+x.old
+x
+x = c(-2.5, 1.4, -3.6, 0.8, 4.5)
+
+n = length(x)
+x.out = numeric(n)
+for(i in 1:n){
+  x.out[i] = exp(2*x[i])+1
+}
+x.out
+
+x.in <- c(-2.5, 1.4, -3.6, 0.8, 4.5)
+x.out <- numeric(length(x.in))
+i <- 1 
+
+while(i <= length(x.in)){
+  x.out[i] <- exp(2 * x.in[i] + 1)
+  i <- i + 1
+}
+x.out
+
+
