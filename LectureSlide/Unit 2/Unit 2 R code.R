@@ -70,59 +70,129 @@ dimnames(mytable) # this is a list and we can access elements of a list by
 dimnames(mytable)$newvar = c("None","Some","Freq")
 mosaicplot(mytable,col=2:5)
 
-#Thursday, May 16:
-data = read.csv("C:/Users/ADMIN/OneDrive - EECD EDPE/Documents/STAT2150/LectureSlide/Unit 2/box_vs_violin.csv")
+# Thursday, May 16:
+data = read.csv("box_vs_violin.csv")
 head(data)
-boxplot(data$x, data$y)
+boxplot(data$x,data$y)
 ?vioplot
 install.packages("vioplot")
 library(vioplot)
-vioplot(data$x , data$y)
+vioplot(data$x,data$y)
 install.packages("sinaplot")
 library(sinaplot)
 ?sinaplot
-sinaplot(data$x , data$y)#does not work
+sinaplot(data$x,data$y) # doesn't work
 
-mydata = c(data$x, data$y)
-categories  = c(rep("x",200),rep("y,200"))
+mydata = c(data$x,data$y)
+categories = c(rep("x",200),rep("y",200))
 sinaplot(mydata,categories)
 
-#Histograms (slide 16):
+# Histograms (slide 16):
 hist(trees$Height)
-hist(trees$Height, nclass = 5)
-hist(trees$Height, nclass = 10)
+hist(trees$Height,nclass=5) # R ignores nclass and gives you something close to what you ask for
+hist(trees$Height,nclass=10)
 
-#density() function
-data = read.csv("C:/Users/ADMIN/OneDrive - EECD EDPE/Documents/STAT2150/LectureSlide/Unit 2/box_vs_violin.csv")
+# For discrete data, do not use a histogram
+# Flip a coin 10 times, repeat that 20 times.
+# X = # of heads on each series of 10 flips
+# possible values of X: 0, 1, 2, ..., 10
+x = rbinom(20,10,0.5)
+length(x) # 20
+x 
+# do not use histogram since this is discrete
+barplot(table(x))
+x = rbinom(200,10,0.5)
+barplot(table(x))
+
+
+# density() function
+data = read.csv("box_vs_violin.csv")
 hist(data$x)
-#line() adds to an existing plot
+# lines() adds to an existing plot
 lines(density(data$x))
 hist(data$x,prob=TRUE)
 lines(density(data$x))
-hist(data$x,prob = TRUE, ylim = c(0,0.14))
-lines(density(data$x)) 
-
-#Overlapping densities:
-data = read.csv("C:/Users/ADMIN/OneDrive - EECD EDPE/Documents/STAT2150/LectureSlide/Unit 2/overlapping_densities.csv")
-plot(density(data$x))
+hist(data$x,prob=TRUE,ylim=c(0,0.14))
 lines(density(data$x))
 
-mycol1 = rgb(173,216,230,maxColorValue = 255 , alpha = 80)
-myco2 = rgb(255,,,maxColorValue = 255 ,alpha = 80)
-
+# Overlapping densities:
+data = read.csv("overlapping_densities.csv")
 plot(density(data$x))
-lines(density(data))
-polygon(density(data$x))
-polygon(density(data$x))
+lines(density(data$y))
+
+mycol1 = rgb(173,216,230,maxColorValue=255,alpha=80)
+mycol2 = rgb(255,192,203,maxColorValue=255,alpha=80)
+
+plot(density(data$x), xlim=c(-4,7))
+lines(density(data$y))
+polygon(density(data$x),col=mycol1)
+polygon(density(data$y),col=mycol2)
 
 data = rock
 hist(rock$peri)
 hist(rock$area)
 qqnorm(rock$peri)
+qqline(rock$peri)
 qqnorm(rock$area)
+qqline(rock$area)
 
-#QQ plot from scratch:
-#syntax of qnorm() is qnorm(area to the left, mu = 0, sigma = 1)
+# QQ plot from scratch:
+# syntax of qnorm() is qnorm(area to the left, mu = 0, sigma = 1)
+qnorm(0.025)
 
 datasorted = sort(rock$peri)
 length(datasorted)
+n = length(datasorted)
+k = 1:n
+k
+probs = (k - 0.5) / n
+# Alternatively:
+probs2 = numeric(48)
+for(i in 1:48){
+  probs2[i] = (k[i] - 0.5) / n
+}
+probs
+probs2
+critvalues = qnorm(probs)
+critvalues # Expected
+plot(critvalues,datasorted) # Observed vs Expected
+
+q1data = quantile(datasorted,0.25)
+q3data = quantile(datasorted,0.75)
+q1crit = quantile(critvalues,0.25)
+q3crit = quantile(critvalues,0.75)
+b1 = (q3data - q1data) / (q3crit - q1crit) # change in Y / change in X
+b0 = mean(datasorted) - b1*mean(critvalues) # ybar - b1*xbar
+abline(a = b0, b = b1) # plots a line with given slope & intercept
+
+# Compare qqnorm() to manual method:
+par(mfrow=c(2,1)) # breaks the graphical window into 2 rows and 1 column
+qqnorm(rock$peri)
+qqline(rock$peri)
+plot(critvalues,datasorted)
+abline(a = b0, b = b1)
+dev.off() # go back to regular graphical window
+
+# Preview of part of May 21 lecture:
+data = read.csv("baseball.csv")
+# For the variable data$HR.AB, let's see what the QQ plot shows us.
+qqnorm(data$HR.AB)
+qqline(data$HR.AB)
+# What we see is that in both tails of the distribution (the smallest data values
+# and the largest data values), the points are ABOVE the reference line
+# When points in both tails are ABOVE the reference line, that indicates the
+# distribution is skewed to the RIGHT. We can also see this skewness in the
+# histogram:
+hist(data$HR.AB)
+
+# The following line of code will generate some data that is LEFT-skewed
+# (You do not need to understand the code, but you can just see the histogram
+# to see that the generated data is left-skewed)
+x = rbeta(1000,8,2)
+hist(x)
+# Now let us look at the QQ plot for this data:
+qqnorm(x)
+qqline(x)
+# We see that in both tails of the distribution, the points are BELOW the
+# reference line. When points in both tails are BELOW the reference line,
+# that indicates the distribution is skewed to the LEFT.
